@@ -40,7 +40,7 @@ projtr = Up'*Xtr;
 accuracy = getAccuracy_KNN(projts, projtr, Ytr, Yts, K);
 
 % number of generalized Givens transformations in the factorization
-m = round(2*p*log2(256));
+m = round(2*p*log2(n));
 
 %% call on the algorithm
 [Us, Xs, positionss, valuess, tuss] = fast_pca_transform(Up, m);
