@@ -83,7 +83,7 @@ accuracy_fast = getAccuracy_KNN(projts, projtr, Ytr, Yts, K);
 %% explicitly compute speedup
 disp(['Accuracy of PCA + K-NN is ' num2str(accuracy) '%']);
 disp(['Accuracy of fastPCA + K-NN is ' num2str(accuracy_fast) '%']);
-disp(['Speedup is x' num2str(2*d*p/nop)]);
+disp(['Speedup is x' num2str(2*d*p/nop)]); %% instead of 2dp you might want to use 2nnz(Up) as the optimal projections might be sparse: disp(['Speedup is x' num2str(2*nnz(Up)/nop)]);
 disp(['We used ' num2str(length(unique(positionss(:)))) ' out of the ' num2str(d) ' features']);
 
 %% save results
