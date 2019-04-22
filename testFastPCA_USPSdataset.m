@@ -12,7 +12,7 @@ p = 15;
 K = 15;
 
 % N is the size of the dataset and n is the dimension
-[n, N] = size(X);
+[d, N] = size(X);
 
 % normalize: remove the means
 X = bsxfun(@minus, X, mean(X));
@@ -40,18 +40,18 @@ projtr = Up'*Xtr;
 accuracy = getAccuracy_KNN(projts, projtr, Ytr, Yts, K);
 
 % number of generalized Givens transformations in the factorization
-m = round(2*p*log2(n));
+g = round(2*p*log2(d));
 
 %% call on the algorithm
-[Us, Xs, positionss, valuess, tuss] = fast_pca_transform(Up, m);
+[Us, Xs, positionss, valuess, tuss] = fast_pca_transform(Up, g);
 
 %% see Remark 1 of the paper
 % check if all calculation are necessary to the final projection
-operation_necessary = zeros(2, m);
+operation_necessary = zeros(2, g);
 projtr = Xtr;
 projts = Xts;
 nop = 0; % number of operations the projection takes
-for h = m:-1:1
+for h = g:-1:1
     A = projtr(positionss(1, h), :); C = projts(positionss(1, h), :);
     B = projtr(positionss(2, h), :); D = projts(positionss(2, h), :);
     if (positionss(1, h) <= p) || (any(find(positionss(1, 1:h-1)==positionss(1, h)))) || (any(find(positionss(2, 1:h-1)==positionss(1, h))))
@@ -83,7 +83,8 @@ accuracy_fast = getAccuracy_KNN(projts, projtr, Ytr, Yts, K);
 %% explicitly compute speedup
 disp(['Accuracy of PCA + K-NN is ' num2str(accuracy) '%']);
 disp(['Accuracy of fastPCA + K-NN is ' num2str(accuracy_fast) '%']);
-disp(['Speedup is x' num2str(2*n*p/nop)]);
+disp(['Speedup is x' num2str(2*d*p/nop)]);
+disp(['We used ' num2str(length(unique(positionss(:)))) ' out of the ' num2str(d) ' features']);
 
 %% save results
-save(['fast pca projections usps n = ' num2str(n) ' p = ' num2str(p) ' m = ' num2str(m) '.mat']);
+save(['fast pca projections usps d = ' num2str(d) ' p = ' num2str(p) ' g = ' num2str(g) '.mat']);
