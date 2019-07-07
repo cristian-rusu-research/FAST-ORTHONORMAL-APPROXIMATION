@@ -84,8 +84,8 @@ end
 %% iterative process to refine the initialization
 for k = 1:K
     Z = U;
-    for k = g:-1:1
-        Z = applyGTransformOnLeftTransp(Z, positions(1, k), positions(2, k), values(:, k));
+    for kk = g:-1:1
+        Z = applyGTransformOnLeftTransp(Z, positions(1, kk), positions(2, kk), values(:, kk));
     end
     
     for kk = 1:g
